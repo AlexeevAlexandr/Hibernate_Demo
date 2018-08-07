@@ -21,7 +21,7 @@ public class DeveloperRunner {
         System.out.println("List of Developers:");
         developerRunner.listDevelopers();
 
-        System.out.println("Removing \'Some Developer\' and updating \'Proselyte Developer\''s experience:");
+        System.out.println("Removing Some Developer and updating Proselyte Developer's experience:");
         developerRunner.removeDeveloper(developerId2);
         developerRunner.updateDeveloper(developerId1, 3);
 
@@ -29,11 +29,13 @@ public class DeveloperRunner {
         developerRunner.listDevelopers();
         sessionFactory.close();
     }
-
-    public Integer addDeveloper(String firstName, String lastName, String specialty, int experience) {
+    void session(SessionFactory sessionFactory){
+        this.sessionFactory = sessionFactory;
+    }
+    Integer addDeveloper(String firstName, String lastName, String specialty, int experience) {
         Session session = sessionFactory.openSession();
-        Transaction transaction = null;
-        Integer developerId = null;
+        Transaction transaction;
+        Integer developerId;
 
         transaction = session.beginTransaction();
         Developer developer = new Developer(firstName, lastName, specialty, experience);
@@ -43,7 +45,7 @@ public class DeveloperRunner {
         return developerId;
     }
 
-    public void listDevelopers() {
+    void listDevelopers() {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
 
@@ -56,26 +58,27 @@ public class DeveloperRunner {
         session.close();
     }
 
-    public void updateDeveloper(int developerId, int experience) {
+    private void updateDeveloper(int developerId, int experience) {
         Session session = sessionFactory.openSession();
-        Transaction transaction = null;
+        Transaction transaction;
 
         transaction = session.beginTransaction();
-        Developer developer = (Developer) session.get(Developer.class, developerId);
+        Developer developer = session.get(Developer.class, developerId);
         developer.setExperience(experience);
         session.update(developer);
         transaction.commit();
         session.close();
     }
 
-    public void removeDeveloper(int developerId) {
+    private void removeDeveloper(int developerId) {
         Session session = sessionFactory.openSession();
-        Transaction transaction = null;
+        Transaction transaction;
 
         transaction = session.beginTransaction();
-        Developer developer = (Developer) session.get(Developer.class, developerId);
+        Developer developer = session.get(Developer.class, developerId);
         session.delete(developer);
         transaction.commit();
         session.close();
     }
+
 }

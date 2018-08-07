@@ -71,7 +71,7 @@ public class Developer {
         return experience;
     }
 
-    public void setExperience(int experience) {
+    void setExperience(int experience) {
         this.experience = experience;
     }
 
