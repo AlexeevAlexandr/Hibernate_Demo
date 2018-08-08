@@ -31,7 +31,7 @@ class Commands {
             List developers = session.createQuery("FROM Developer").list();
             for (Object developer : developers) {
                 System.out.println(developer);
-                System.out.println("\n================\n");
+                System.out.println("================");
             }
         }catch (Exception e) {
             System.out.println("Exception in list block: " + e.getMessage());
@@ -72,6 +72,7 @@ class Commands {
             Transaction transaction = session.beginTransaction();
             session.createQuery("DELETE FROM Developer").executeUpdate();
             transaction.commit();
+            System.out.println("Delete from table is successful");
         }catch (Exception e){
             System.out.println("Exception in deleteAllData block: " + e.getMessage());
         }
