@@ -2,7 +2,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ class Commands {
             transaction.commit();
             return developerId;
         }catch (Exception e){
-            System.out.println("Exception in add block");
+            System.out.println("Exception in add block: " + e.getMessage());
         }
         return 0;
     }
@@ -28,14 +27,13 @@ class Commands {
         try(SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
             Session session = sessionFactory.openSession())
         {
-            Transaction transaction = session.beginTransaction();
             List developers = session.createQuery("FROM Developer").list();
             for (Object developer : developers) {
                 System.out.println(developer);
                 System.out.println("\n================\n");
             }
         }catch (Exception e) {
-            System.out.println("Exception in list block");
+            System.out.println("Exception in list block: " + e.getMessage());
         }
     }
 
@@ -49,7 +47,7 @@ class Commands {
             session.update(developer);
             transaction.commit();
         }catch (Exception e){
-            System.out.println("Exception in update block");
+            System.out.println("Exception in update block: " + e.getMessage());
         }
     }
 
@@ -62,7 +60,7 @@ class Commands {
             session.delete(developer);
             transaction.commit();
         }catch (Exception e){
-            System.out.println("Exception in remove block");
+            System.out.println("Exception in remove block: " + e.getMessage());
         }
     }
 
@@ -72,7 +70,7 @@ class Commands {
         {
             session.createQuery("DELETE FROM Developer").executeUpdate();
         }catch (Exception e){
-            System.out.println("Exception in deleteAllData block " + e.getMessage());
+            System.out.println("Exception in deleteAllData block: " + e.getMessage());
         }
     }
 }

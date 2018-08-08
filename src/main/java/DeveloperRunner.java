@@ -7,7 +7,7 @@ public class DeveloperRunner {
         System.out.println("Adding Developer's records to the database");
         Integer developerId1 = developerRunner.commands.addDeveloper("Proselyte", "Developer", "Java Developer", 2);
         Integer developerId2 = developerRunner.commands.addDeveloper("Some", "Developer", "C++ Developer", 2);
-        Integer developerId3 = developerRunner.commands.addDeveloper("Peter", "Team Lead", "Java Team Lead", 6);
+        developerRunner.commands.addDeveloper("Peter", "Team Lead", "Java Team Lead", 6);
 
         System.out.println("List of Developers:");
         developerRunner.commands.listDevelopers();
