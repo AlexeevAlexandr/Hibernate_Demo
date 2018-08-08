@@ -25,7 +25,7 @@ public class Developer {
     /**
      * Plain constructor
      */
-    public Developer(String firstName, String lastName, String specialty, int experience) {
+    Developer(String firstName, String lastName, String specialty, int experience) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.specialty = specialty;

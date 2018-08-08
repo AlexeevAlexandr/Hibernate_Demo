@@ -1,6 +1,6 @@
 public class DeveloperRunner {
-    private Commands commands = new Commands();
 
+    private Commands commands = new Commands();
     public static void main(String[] args) {
         DeveloperRunner developerRunner = new DeveloperRunner();
 
@@ -11,6 +11,7 @@ public class DeveloperRunner {
 
         System.out.println("List of Developers:");
         developerRunner.commands.listDevelopers();
+        developerRunner.commands.listDevelopers();
 
         System.out.println("Removing Some Developer and updating Proselyte Developer's experience:");
         developerRunner.commands.removeDeveloper(developerId2);
@@ -19,4 +20,5 @@ public class DeveloperRunner {
         System.out.println("Final list of Developers:");
         developerRunner.commands.listDevelopers();
     }
+
 }

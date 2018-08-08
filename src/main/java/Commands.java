@@ -3,6 +3,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 class Commands {
@@ -68,7 +69,9 @@ class Commands {
         try(SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
             Session session = sessionFactory.openSession())
         {
+            Transaction transaction = session.beginTransaction();
             session.createQuery("DELETE FROM Developer").executeUpdate();
+            transaction.commit();
         }catch (Exception e){
             System.out.println("Exception in deleteAllData block: " + e.getMessage());
         }
