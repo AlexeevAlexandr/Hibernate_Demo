@@ -11,7 +11,6 @@ public class DeveloperRunner {
 
         System.out.println("List of Developers:");
         commands.listDevelopers();
-        commands.listDevelopers();
 
         System.out.println("Removing Some Developer and updating Proselyte Developer's experience:");
         commands.removeDeveloper(developerId2);
