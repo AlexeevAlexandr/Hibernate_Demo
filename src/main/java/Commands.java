@@ -5,14 +5,23 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Projections;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class Commands {
     private Transaction transaction = null;
+    private SessionFactory sessionFactory;
+
+    void SessionFactoryOpen(){
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+    }
+
+    void SessionFactoryClosed(){
+        sessionFactory.close();
+    }
 
     Integer addDeveloper(String firstName, String lastName, String specialty, int experience, int salary) {
-        try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-             Session session = sessionFactory.openSession())
+        try (Session session = sessionFactory.openSession())
         {
             System.out.println("Adding Developer's records to the database");
             transaction = session.beginTransaction();
@@ -30,8 +39,7 @@ class Commands {
     }
 
     void listDevelopers() {
-        try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-             Session session = sessionFactory.openSession())
+        try (Session session = sessionFactory.openSession())
         {
             List developers = session.createQuery("FROM Developer").list();
             System.out.println("List of all Developers:");
@@ -45,8 +53,7 @@ class Commands {
     }
 
     void updateDeveloper(int developerId, int experience) {
-        try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-            Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             Developer developer = session.get(Developer.class, developerId);
             developer.setExperience(experience);
@@ -61,8 +68,7 @@ class Commands {
     }
 
     void removeDeveloper(int developerId) {
-        try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-             Session session = sessionFactory.openSession())
+        try (Session session = sessionFactory.openSession())
         {
             transaction = session.beginTransaction();
             Developer developer = session.get(Developer.class, developerId);
@@ -78,8 +84,7 @@ class Commands {
     }
 
     void deleteAllData() {
-        try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-             Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.createQuery("DELETE FROM Developer").executeUpdate();
             transaction.commit();
@@ -93,8 +98,7 @@ class Commands {
     }
 
     void listByParameter() {
-        try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-             Session session = sessionFactory.openSession())
+        try (Session session = sessionFactory.openSession())
         {
             System.out.println("The Developer who will be deleted");
             List developers = session.createQuery("FROM Developer D WHERE D.firstName = 'Developer2'").list();
@@ -110,8 +114,7 @@ class Commands {
      * (ORDER BY D.experience DESC) - sorting of list (DESC - by descending; ASC - by ascending);
      */
     void sortList() {
-        try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-             Session session = sessionFactory.openSession())
+        try (Session session = sessionFactory.openSession())
         {
             List developers = session.createQuery(
                     "FROM Developer D WHERE experience > 3 ORDER BY D.experience DESC").list();
@@ -125,8 +128,7 @@ class Commands {
     }
 
     void groupList() {
-        try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-             Session session = sessionFactory.openSession())
+        try (Session session = sessionFactory.openSession())
         {
             List developers = session.createQuery("FROM Developer D GROUP BY D.specialty").list();
             System.out.println("grouping list");
@@ -139,15 +141,16 @@ class Commands {
     }
 
     public void totalSalary() {
-        try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-             Session session = sessionFactory.openSession())
+        try (Session session = sessionFactory.openSession())
         {
             transaction = session.beginTransaction();
             Criteria criteria = session.createCriteria(Developer.class);
-            criteria.setProjection(Projections.sum("salary"));
-
-            List totalSalary = criteria.list();
-            System.out.println("Total salary of all developers: " + totalSalary.get(0));
+            List sum = criteria.setProjection(Projections.sum("salary")).list();
+            List max = criteria.setProjection(Projections.max("salary")).list();
+            List min = criteria.setProjection(Projections.min("salary")).list();
+            System.out.println("Total salary of all developers: " + sum);
+            System.out.println("Min salary: " + max);
+            System.out.println("Max salary: " + min);
             transaction.commit();
         }catch (Exception e) {
             if(transaction != null){
