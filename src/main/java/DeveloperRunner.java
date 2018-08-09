@@ -9,14 +9,17 @@ public class DeveloperRunner {
         Integer developerId2 = commands.addDeveloper("Some", "Developer", "C++ Developer", 2);
         commands.addDeveloper("Peter", "Team Lead", "Java Team Lead", 6);
 
-        System.out.println("List of Developers:");
+        System.out.println("List of all Developers:");
         commands.listDevelopers();
+
+        System.out.println("The Developer who will be deleted");
+        commands.listByParameter();
 
         System.out.println("Removing Some Developer and updating Proselyte Developer's experience:");
         commands.removeDeveloper(developerId2);
         commands.updateDeveloper(developerId1, 3);
 
-        System.out.println("Final list of Developers:");
+        System.out.println("Final listByParameter of Developers:");
         commands.listDevelopers();
     }
 

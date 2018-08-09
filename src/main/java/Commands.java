@@ -2,6 +2,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -34,7 +35,7 @@ class Commands {
                 System.out.println("================");
             }
         }catch (Exception e) {
-            System.out.println("Exception in list block: " + e.getMessage());
+            System.out.println("Exception in listByParameter block: " + e.getMessage());
         }
     }
 
@@ -77,4 +78,17 @@ class Commands {
             System.out.println("Exception in deleteAllData block: " + e.getMessage());
         }
     }
+
+    void listByParameter(){
+        try(SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+            Session session = sessionFactory.openSession())
+        {
+            Query query = session.createQuery("FROM Developer D WHERE D.firstName = 'Some'");
+            List developers = query.list();
+            System.out.println(developers);
+        }catch (Exception e){
+            System.out.println("Exception in listByParameter block: " + e.getMessage());
+        }
+    }
+
 }

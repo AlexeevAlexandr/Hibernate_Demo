@@ -6,7 +6,7 @@ public class q {
         view.write("Hello");
         boolean check = true;
         while (check) {
-            view.write("list commands:\n" +
+            view.write("listByParameter commands:\n" +
                     "add - add data to table\n" +
                     "clear - delete all data from table\n" +
                     "exit - exit");
