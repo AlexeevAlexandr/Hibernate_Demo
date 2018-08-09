@@ -21,6 +21,10 @@ public class q {
                 case "exit":
                     view.write("Bye");
                     check = false;
+                    break;
+                default:
+                    view.write("Incorrect command");
+                    break;
             }
         }
     }
