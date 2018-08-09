@@ -7,19 +7,22 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 class Commands {
+    private Transaction transaction = null;
+
     Integer addDeveloper(String firstName, String lastName, String specialty, int experience) {
-        Integer developerId;
         try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
              Session session = sessionFactory.openSession())
         {
             System.out.println("Adding Developer's records to the database");
-            Transaction transaction;
             transaction = session.beginTransaction();
             Developer developer = new Developer(firstName, lastName, specialty, experience);
-            developerId = (Integer) session.save(developer);
+            Integer developerId = (Integer) session.save(developer);
             transaction.commit();
             return developerId;
         } catch (Exception e) {
+            if(transaction != null){
+                transaction.rollback();
+            }
             System.out.println("Exception in add block: " + e.getMessage());
         }
         return 0;
@@ -42,13 +45,16 @@ class Commands {
 
     void updateDeveloper(int developerId, int experience) {
         try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-             Session session = sessionFactory.openSession()) {
-            Transaction transaction = session.beginTransaction();
+            Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
             Developer developer = session.get(Developer.class, developerId);
             developer.setExperience(experience);
             session.update(developer);
             transaction.commit();
         } catch (Exception e) {
+            if(transaction != null){
+                transaction.rollback();
+            }
             System.out.println("Exception in update block: " + e.getMessage());
         }
     }
@@ -57,12 +63,15 @@ class Commands {
         try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
              Session session = sessionFactory.openSession())
         {
-            Transaction transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             Developer developer = session.get(Developer.class, developerId);
             session.delete(developer);
             transaction.commit();
             System.out.println("Removing Some Developer and updating Proselyte Developer's experience:");
         } catch (Exception e) {
+            if(transaction != null){
+                transaction.rollback();
+            }
             System.out.println("Exception in remove block: " + e.getMessage());
         }
     }
@@ -70,11 +79,14 @@ class Commands {
     void deleteAllData() {
         try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
              Session session = sessionFactory.openSession()) {
-            Transaction transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             session.createQuery("DELETE FROM Developer").executeUpdate();
             transaction.commit();
             System.out.println("Delete from table is successful");
         } catch (Exception e) {
+            if(transaction != null){
+                transaction.rollback();
+            }
             System.out.println("Exception in deleteAllData block: " + e.getMessage());
         }
     }
