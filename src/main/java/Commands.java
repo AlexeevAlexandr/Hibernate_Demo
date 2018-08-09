@@ -83,7 +83,7 @@ class Commands {
         try(SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
             Session session = sessionFactory.openSession())
         {
-            Query query = session.createQuery("FROM Developer D WHERE D.firstName = 'Some'");
+            Query query = session.createQuery("FROM Developer D WHERE D.firstName = 'Developer2'");
             List developers = query.list();
             System.out.println(developers);
         }catch (Exception e){
@@ -91,4 +91,21 @@ class Commands {
         }
     }
 
+    /**
+     * sorting of list;
+     * (experience > 3) - points that list will be shown with experience more than 3;
+     * (ORDER BY D.experience DESC) - sorting of list (DESC - by descending; ASC - by ascending);
+     */
+    void sortList(){
+        try(SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+            Session session = sessionFactory.openSession())
+        {
+            Query query = session.createQuery(
+                    "FROM Developer D WHERE experience > 3 ORDER BY D.experience DESC");
+            List developers = query.list();
+            System.out.println(developers);
+        }catch (Exception e){
+            System.out.println("Exception in sortList block: " + e.getMessage());
+        }
+    }
 }

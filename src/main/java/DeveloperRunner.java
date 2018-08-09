@@ -5,9 +5,12 @@ public class DeveloperRunner {
         commands.deleteAllData();
 
         System.out.println("Adding Developer's records to the database");
-        Integer developerId1 = commands.addDeveloper("Proselyte", "Developer", "Java Developer", 2);
-        Integer developerId2 = commands.addDeveloper("Some", "Developer", "C++ Developer", 2);
-        commands.addDeveloper("Peter", "Team Lead", "Java Team Lead", 6);
+        Integer developerId1 = commands.addDeveloper("Developer1", "Developer1", "Java Developer", 2);
+        Integer developerId2 = commands.addDeveloper("Developer2", "Developer2", "C++ Developer", 2);
+        commands.addDeveloper("Developer6", "Developer6", "Java Team Lead", 6);
+        commands.addDeveloper("Developer4", "Developer4", "Java Junior", 1);
+        commands.addDeveloper("Developer3", "Developer3", "Java Team Lead", 8);
+        commands.addDeveloper("Developer5", "Developer5", "Java Team Lead", 4);
 
         System.out.println("List of all Developers:");
         commands.listDevelopers();
@@ -21,6 +24,9 @@ public class DeveloperRunner {
 
         System.out.println("Final listByParameter of Developers:");
         commands.listDevelopers();
+
+        System.out.println("Sorted list");
+        commands.sortList();
     }
 
 }
