@@ -4,12 +4,12 @@ public class DeveloperRunner {
         //clear table
         commands.deleteAllData();
         //add to table
-        Integer developerId1 = commands.addDeveloper("Developer1", "Developer1", "Java Developer", 2);
-        Integer developerId2 = commands.addDeveloper("Developer2", "Developer2", "C++ Developer", 2);
-        commands.addDeveloper("Developer6", "Developer6", "Java Team Lead", 6);
-        commands.addDeveloper("Developer4", "Developer4", "Java Junior", 1);
-        commands.addDeveloper("Developer3", "Developer3", "Java Team Lead", 8);
-        commands.addDeveloper("Developer5", "Developer5", "Java Team Lead", 4);
+        Integer developerId1 = commands.addDeveloper("Developer1", "Developer1", "Java Developer", 2, 2000);
+        Integer developerId2 = commands.addDeveloper("Developer2", "Developer2", "C++ Developer", 2, 1800);
+        commands.addDeveloper("Developer6", "Developer6", "Java Team Lead", 6, 2500);
+        commands.addDeveloper("Developer4", "Developer4", "Java Junior", 1, 800);
+        commands.addDeveloper("Developer3", "Developer3", "Java Team Lead", 8, 2300);
+        commands.addDeveloper("Developer5", "Developer5", "Java Team Lead", 4, 2100);
         //view list
         commands.listDevelopers();
         //view list by parameter
@@ -23,6 +23,8 @@ public class DeveloperRunner {
         commands.sortList();
         //view group list
         commands.groupList();
+        //view total salary
+        commands.totalSalary();
     }
 
 }

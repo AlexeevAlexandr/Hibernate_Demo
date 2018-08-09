@@ -15,6 +15,7 @@
         <property name="lastName" column="LAST_NAME" type="string"/>
         <property name="specialty" column="SPECIALTY" type="string"/>
         <property name="experience" column="EXPERIENCE" type="int"/>
+        <property name="salary" column="SALARY" type="int"/>
     </class>
 
 </hibernate-mapping>

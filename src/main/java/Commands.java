@@ -1,21 +1,22 @@
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
+import org.hibernate.criterion.Projections;
 
 import java.util.List;
 
 class Commands {
     private Transaction transaction = null;
 
-    Integer addDeveloper(String firstName, String lastName, String specialty, int experience) {
+    Integer addDeveloper(String firstName, String lastName, String specialty, int experience, int salary) {
         try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
              Session session = sessionFactory.openSession())
         {
             System.out.println("Adding Developer's records to the database");
             transaction = session.beginTransaction();
-            Developer developer = new Developer(firstName, lastName, specialty, experience);
+            Developer developer = new Developer(firstName, lastName, specialty, experience, salary);
             Integer developerId = (Integer) session.save(developer);
             transaction.commit();
             return developerId;
@@ -134,6 +135,25 @@ class Commands {
             }
         } catch (Exception e) {
             System.out.println("Exception in groupList: " + e.getMessage());
+        }
+    }
+
+    public void totalSalary() {
+        try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+             Session session = sessionFactory.openSession())
+        {
+            transaction = session.beginTransaction();
+            Criteria criteria = session.createCriteria(Developer.class);
+            criteria.setProjection(Projections.sum("salary"));
+
+            List totalSalary = criteria.list();
+            System.out.println("Total salary of all developers: " + totalSalary.get(0));
+            transaction.commit();
+        }catch (Exception e) {
+            if(transaction != null){
+                transaction.rollback();
+            }
+            System.out.println("Exception in deleteAllData block: " + e.getMessage());
         }
     }
 }

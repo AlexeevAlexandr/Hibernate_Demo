@@ -49,7 +49,9 @@ public class q {
             String specialty = view.readString();
             view.write("Enter experience");
             int experience = view.readInt();
-            commands.addDeveloper(firstName, lastName, specialty, experience);
+            view.write("Enter salary");
+            int salary = view.readInt();
+            commands.addDeveloper(firstName, lastName, specialty, experience, salary);
             view.write("data is saved");
         }catch (Exception e){ view.write(e.getMessage()); }
     }
