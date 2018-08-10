@@ -30,13 +30,13 @@ public class DeveloperRunner {
             commands.groupList();
             //view total salary
             ArrayList<List> list = commands.totalSalary();
-            System.out.println("========================");
-            System.out.println("Sum salary: " + list.get(0));
-            System.out.println("========================");
-            System.out.println("Max salary: " + list.get(1));
-            System.out.println("========================");
-            System.out.println("Min salary: " + list.get(2));
-            System.out.println("========================");
+            System.out.println ("========================\n" +
+                                "Sum salary: " + list.get(0) + "\n" +
+                                "========================" + "\n" +
+                                "Max salary: " + list.get(1) + "\n" +
+                                "========================" + "\n" +
+                                "Min salary: " + list.get(2) + "\n" +
+                                "========================");
         }catch (Exception e){
             System.out.println("Exception in class DeveloperRunner: " + e.getMessage());
         }finally {
