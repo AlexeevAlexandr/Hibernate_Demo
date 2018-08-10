@@ -163,6 +163,7 @@ class Commands {
             System.out.println("Exception in deleteAllData block: " + e.getMessage());
         }
     }
+
     //Нативный SQL:
     void listDevelopers2() {
         Session session = sessionFactory.openSession();
@@ -181,6 +182,7 @@ class Commands {
         transaction.commit();
         session.close();
     }
+
     //Нативный SQL:
     void listDevelopersScalar() {
         Session session = sessionFactory.openSession();
@@ -203,6 +205,7 @@ class Commands {
         session.close();
     }
 
+    //add 100_000 rows by packages
     void addDevelopers() {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
