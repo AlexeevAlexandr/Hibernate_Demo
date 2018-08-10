@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class DeveloperRunner {
     public static void main(String[] args) {
         Commands commands = new Commands();
@@ -26,7 +29,14 @@ public class DeveloperRunner {
             //view group list
             commands.groupList();
             //view total salary
-            commands.totalSalary();
+            ArrayList<List> list = commands.totalSalary();
+            System.out.println("========================");
+            System.out.println("Sum salary: " + list.get(0));
+            System.out.println("========================");
+            System.out.println("Max salary: " + list.get(1));
+            System.out.println("========================");
+            System.out.println("Min salary: " + list.get(2));
+            System.out.println("========================");
         }catch (Exception e){
             System.out.println("Exception in class DeveloperRunner: " + e.getMessage());
         }finally {

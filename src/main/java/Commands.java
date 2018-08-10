@@ -2,6 +2,7 @@ import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Projections;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -144,7 +145,8 @@ class Commands {
         }
     }
 
-    void totalSalary() {
+    ArrayList<List> totalSalary() {
+        ArrayList<List> list = null;
         try (Session session = sessionFactory.openSession())
         {
             transaction = session.beginTransaction();
@@ -152,16 +154,19 @@ class Commands {
             List sum = criteria.setProjection(Projections.sum("salary")).list();
             List max = criteria.setProjection(Projections.max("salary")).list();
             List min = criteria.setProjection(Projections.min("salary")).list();
-            System.out.println("Total salary of all developers: " + sum);
-            System.out.println("Min salary: " + max);
-            System.out.println("Max salary: " + min);
+            list = new ArrayList<>();
+            list.add(sum);
+            list.add(max);
+            list.add(min);
             transaction.commit();
+
         }catch (Exception e) {
             if(transaction != null){
                 transaction.rollback();
             }
             System.out.println("Exception in deleteAllData block: " + e.getMessage());
         }
+        return list;
     }
 
     //Нативный SQL:
