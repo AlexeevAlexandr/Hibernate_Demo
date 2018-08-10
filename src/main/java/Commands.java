@@ -1,12 +1,9 @@
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Projections;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 class Commands {
     private Transaction transaction = null;
@@ -44,8 +41,9 @@ class Commands {
             List developers = session.createQuery("FROM Developer").list();
             System.out.println("List of all Developers:");
             for (Object developer : developers) {
+                System.out.println("=======================");
                 System.out.println(developer);
-                System.out.println("================");
+                System.out.println("=======================");
             }
         } catch (Exception e) {
             System.out.println("Exception in listByParameter block: " + e.getMessage());
@@ -102,7 +100,9 @@ class Commands {
         {
             System.out.println("The Developer who will be deleted");
             List developers = session.createQuery("FROM Developer D WHERE D.firstName = 'Developer2'").list();
+            System.out.println("=======================");
             System.out.println(developers);
+            System.out.println("=======================");
         } catch (Exception e) {
             System.out.println("Exception in listByParameter block: " + e.getMessage());
         }
@@ -120,7 +120,9 @@ class Commands {
                     "FROM Developer D WHERE experience > 3 ORDER BY D.experience DESC").list();
             System.out.println("Sorted list");
             for(Object developer : developers) {
+                System.out.println("=======================");
                 System.out.println(developer);
+                System.out.println("=======================");
             }
         } catch (Exception e) {
             System.out.println("Exception in sortList block: " + e.getMessage());
@@ -133,14 +135,16 @@ class Commands {
             List developers = session.createQuery("FROM Developer D GROUP BY D.specialty").list();
             System.out.println("grouping list");
             for (Object developer : developers) {
+                System.out.println("=======================");
                 System.out.println(developer);
+                System.out.println("=======================");
             }
         } catch (Exception e) {
             System.out.println("Exception in groupList: " + e.getMessage());
         }
     }
 
-    public void totalSalary() {
+    void totalSalary() {
         try (Session session = sessionFactory.openSession())
         {
             transaction = session.beginTransaction();
@@ -159,4 +163,68 @@ class Commands {
             System.out.println("Exception in deleteAllData block: " + e.getMessage());
         }
     }
+    //Нативный SQL:
+    void listDevelopers2() {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+
+        transaction = session.beginTransaction();
+        SQLQuery sqlQuery = session.createSQLQuery("SELECT * FROM HIBERNATE_DEVELOPERS");
+        sqlQuery.addEntity(Developer.class);
+        List developers = sqlQuery.list();
+
+        for (Object developer : developers) {
+            System.out.println("=======================");
+            System.out.println(developer);
+            System.out.println("=======================");
+        }
+        transaction.commit();
+        session.close();
+    }
+    //Нативный SQL:
+    void listDevelopersScalar() {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        SQLQuery sqlQuery = session.createSQLQuery("SELECT * FROM HIBERNATE_DEVELOPERS");
+        sqlQuery.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+        List developers = sqlQuery.list();
+        for (Object developer : developers) {
+            Map row = (Map) developer;
+            System.out.println("=======================");
+            System.out.println("id: " + row.get("id"));
+            System.out.println("First Name: " + row.get("FIRST_NAME"));
+            System.out.println("Last Name: " + row.get("LAST_NAME"));
+            System.out.println("Specialty: " + row.get("SPECIALTY"));
+            System.out.println("Experience: " + row.get("EXPERIENCE"));
+            System.out.println("Salary: " + row.get("SALARY"));
+            System.out.println("=======================");
+        }
+        transaction.commit();
+        session.close();
+    }
+
+    void addDevelopers() {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        for (int i = 0; i < 100_000; i++) {
+            String firstName = "First Name " + i;
+            String lastName = "Last Name " + i;
+            String specialty = "Specialty " + i;
+            int experience = i;
+            int salary = i * 10;
+            Developer developer = new Developer(
+                    firstName, lastName, specialty, experience, salary);
+            session.save(developer);
+            if (i % 50 == 0) {
+                System.out.println("sent packages " + i);
+                session.flush();
+                session.clear();
+            }
+        }
+        System.out.println("All packages is sent");
+        transaction.commit();
+        session.close();
+    }
+
 }

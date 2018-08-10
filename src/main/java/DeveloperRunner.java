@@ -28,7 +28,7 @@ public class DeveloperRunner {
             //view total salary
             commands.totalSalary();
         }catch (Exception e){
-            System.out.println("Exception in class DeveloperRunner" + e.getMessage());
+            System.out.println("Exception in class DeveloperRunner: " + e.getMessage());
         }finally {
             commands.SessionFactoryClosed();
         }
