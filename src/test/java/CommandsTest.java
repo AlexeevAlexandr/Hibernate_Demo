@@ -96,5 +96,4 @@ public class CommandsTest {
         assertEquals(incomeMessage.substring(19, incomeMessage.length()-2), message);
     }
 
-
 }
