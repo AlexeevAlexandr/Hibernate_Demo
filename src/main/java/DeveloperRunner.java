@@ -20,6 +20,7 @@ public class DeveloperRunner {
             //view list by parameter
             commands.listByParameter();
             //remove and update
+            System.out.println("Removing Some Developer and updating Proselyte Developer's experience:");
             commands.removeDeveloper(developerId2);
             commands.updateDeveloper(developerId1, 3);
 

@@ -9,7 +9,8 @@ import java.util.Map;
 class Commands {
     private Transaction transaction = null;
     SessionFactory sessionFactory;
-    String string;
+    List developers;
+    String message;
 
     void SessionFactoryOpen(){
         sessionFactory = new Configuration().configure().buildSessionFactory();
@@ -40,8 +41,9 @@ class Commands {
     void listDevelopers() {
         try (Session session = sessionFactory.openSession())
         {
-            List developers = session.createQuery("FROM Developer").list();
-            System.out.println("List of all Developers:");
+            developers = session.createQuery("FROM Developer").list();
+            message = "List of all Developers:";
+            System.out.println(message);
             for (Object developer : developers) {
                 System.out.println("=======================");
                 System.out.println(developer);
@@ -74,7 +76,6 @@ class Commands {
             Developer developer = session.get(Developer.class, developerId);
             session.delete(developer);
             transaction.commit();
-            System.out.println("Removing Some Developer and updating Proselyte Developer's experience:");
         } catch (Exception e) {
             if(transaction != null){
                 transaction.rollback();
@@ -88,8 +89,8 @@ class Commands {
             transaction = session.beginTransaction();
             session.createQuery("DELETE FROM Developer").executeUpdate();
             transaction.commit();
-            string = "Delete from table is successful";
-            System.out.println(string);
+            message = "Delete from table is successful";
+            System.out.println(message);
         } catch (Exception e) {
             if(transaction != null){
                 transaction.rollback();
@@ -101,8 +102,9 @@ class Commands {
     void listByParameter() {
         try (Session session = sessionFactory.openSession())
         {
-            System.out.println("The Developer who will be deleted");
-            List developers = session.createQuery("FROM Developer D WHERE D.firstName = 'Developer2'").list();
+            message = "List by parameter";
+            System.out.println(message);
+            developers = session.createQuery("FROM Developer D WHERE D.firstName = 'Developer2'").list();
             System.out.println("=======================");
             System.out.println(developers);
             System.out.println("=======================");
