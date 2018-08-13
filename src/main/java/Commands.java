@@ -8,7 +8,8 @@ import java.util.Map;
 
 class Commands {
     private Transaction transaction = null;
-    private SessionFactory sessionFactory;
+    SessionFactory sessionFactory;
+    String string;
 
     void SessionFactoryOpen(){
         sessionFactory = new Configuration().configure().buildSessionFactory();
@@ -87,7 +88,8 @@ class Commands {
             transaction = session.beginTransaction();
             session.createQuery("DELETE FROM Developer").executeUpdate();
             transaction.commit();
-            System.out.println("Delete from table is successful");
+            string = "Delete from table is successful";
+            System.out.println(string);
         } catch (Exception e) {
             if(transaction != null){
                 transaction.rollback();

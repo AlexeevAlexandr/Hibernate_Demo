@@ -1,18 +1,31 @@
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class CommandsTest {
     private Commands commands = new Commands();
 
-    @Test
-    public void totalSalary() {
+    @Before
+    public void setUp(){
         commands.SessionFactoryOpen();
-        ArrayList<List> list = commands.totalSalary();
+    }
+
+    @After
+    public void tearDown(){
         commands.SessionFactoryClosed();
-        assertEquals(list.toString(),"");
+    }
+
+    @Test
+    public void ifSessionFactory(){
+        assertTrue(commands.sessionFactory.isOpen());
+    }
+
+    @Test
+    public void deleteTest() {
+        commands.deleteAllData();
+        assertEquals(commands.string,"Delete from table is successful");
     }
 }
