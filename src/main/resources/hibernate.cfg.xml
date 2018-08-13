@@ -7,7 +7,7 @@
         <property name="hibernate.connection.driver_class"> com.mysql.jdbc.Driver </property>
 
         <!-- Assume PROSELYTE_TUTORIAL is the database name -->
-        <property name="hibernate.connection.url"> jdbc:mysql://localhost/demo </property>
+        <property name="hibernate.connection.url"> jdbc:mysql://localhost/demo?serverTimezone=UTC </property>
         <property name="hibernate.connection.username"> root </property>
         <property name="hibernate.connection.password"> 111111 </property>
 
