@@ -85,7 +85,8 @@ class Commands {
     }
 
     void deleteAllData() {
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession())
+        {
             transaction = session.beginTransaction();
             session.createQuery("DELETE FROM Developer").executeUpdate();
             transaction.commit();
@@ -171,6 +172,20 @@ class Commands {
             System.out.println("Exception in deleteAllData block: " + e.getMessage());
         }
         return list;
+    }
+
+    //zero out countID
+    void dropCountID(){
+        try (Session session = sessionFactory.openSession())
+        {
+            transaction = session.beginTransaction();
+            session.createSQLQuery("ALTER TABLE HIBERNATE_DEVELOPERS AUTO_INCREMENT = 0").executeUpdate();
+            transaction.commit();
+            message = "id is reset";
+            System.out.println(message);
+        }catch (Exception e){
+            System.out.println("Exception in dropCountID: " + e.getMessage());
+        }
     }
 
     //Нативный SQL:

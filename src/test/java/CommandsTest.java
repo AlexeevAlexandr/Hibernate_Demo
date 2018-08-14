@@ -10,6 +10,7 @@ public class CommandsTest {
     public void setUp(){
         commands.SessionFactoryOpen();
         commands.deleteAllData();
+        commands.dropCountID();
     }
 
     @After
@@ -36,64 +37,69 @@ public class CommandsTest {
 
     @Test
     public void addDeveloperTest(){
-        String message = "Developer:\n" +
-                "id: 46\n" +
+        String message = "[Developer:\n" +
+                "id: 1\n" +
                 "First Name: firstName\n" +
                 "Last Name: lastName\n" +
                 "Specialty: specialty\n" +
                 "Experience: 1\n" +
-                "Salary: 1000";
+                "Salary: 1000\n" +
+                "]";
         commands.addDeveloper("firstName", "lastName", "specialty", 1, 1000);
         commands.listDevelopers();
-        String incomeMessage = commands.developers.toString();
         assertEquals(commands.message, "List of all Developers:");
-        assertEquals(incomeMessage.substring(19, incomeMessage.length()-2), message.substring(18, message.length()));
+        assertEquals(commands.developers.toString(), message);
     }
 
     @Test
     public void updateDeveloperTest(){
-        String message = "First Name: firstName\n" +
+        String message = "[Developer:\n" +
+                "id: 1\n" +
+                "First Name: firstName\n" +
                 "Last Name: lastName\n" +
                 "Specialty: specialty\n" +
                 "Experience: 2\n" +
-                "Salary: 1000";
+                "Salary: 1000\n" +
+                "]";
         Integer developerId = commands.addDeveloper("firstName", "lastName", "specialty", 1, 1000);
         commands.updateDeveloper(developerId, 2);
         commands.listDevelopers();
-        String incomeMessage = commands.developers.toString();
         assertEquals(commands.message, "List of all Developers:");
-        assertEquals(incomeMessage.substring(19, incomeMessage.length()-2), message);
+        assertEquals(commands.developers.toString(), message);
     }
 
     @Test
     public void removeDeveloperTest(){
-        String message = "First Name: firstName\n" +
+        String message = "[Developer:\n" +
+                "id: 1\n" +
+                "First Name: firstName\n" +
                 "Last Name: lastName\n" +
                 "Specialty: specialty\n" +
                 "Experience: 1\n" +
-                "Salary: 1000";
+                "Salary: 1000\n" +
+                "]";
         commands.addDeveloper("firstName", "lastName", "specialty", 1, 1000);
-        Integer developerId = commands.addDeveloper("firstName", "lastName", "specialty", 1, 1000);
+        Integer developerId = commands.addDeveloper("firstName2", "lastName2", "specialty2", 2, 2000);
         commands.removeDeveloper(developerId);
         commands.listDevelopers();
-        String incomeMessage = commands.developers.toString();
         assertEquals(commands.message, "List of all Developers:");
-        assertEquals(incomeMessage.substring(19, incomeMessage.length()-2), message);
+        assertEquals(commands.developers.toString(), message);
     }
 
     @Test
     public void ListByParameterTest(){
-        String message = "First Name: Developer2\n" +
+        String message = "[Developer:\n" +
+                "id: 2\n" +
+                "First Name: Developer2\n" +
                 "Last Name: lastName2\n" +
                 "Specialty: specialty2\n" +
                 "Experience: 2\n" +
-                "Salary: 2000";
+                "Salary: 2000\n" +
+                "]";
         commands.addDeveloper("Developer1", "lastName1", "specialty1", 1, 1000);
         commands.addDeveloper("Developer2", "lastName2", "specialty2", 2, 2000);
         commands.listByParameter();
-        String incomeMessage = commands.developers.toString();
         assertEquals(commands.message, "List by parameter");
-        assertEquals(incomeMessage.substring(19, incomeMessage.length()-2), message);
+        assertEquals(commands.developers.toString(), message);
     }
-
 }
